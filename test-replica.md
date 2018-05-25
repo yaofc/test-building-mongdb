@@ -89,16 +89,15 @@ openssl rand -base64 741 > /var/lib/mongodb/mongodb-keyfile
 chmod 600 /var/lib/mongodb/mongodb-keyfile
 chown mongodb.mongodb /var/lib/mongodb/mongodb-keyfile
 vi /var/lib/mongodb/mongodb-keyfile
-sed -i '/security:/a security:\n\ \ keyFile: /var/lib/mongodb/mongodb-keyfile' /etc/mongod.conf
-sed -i '/replication:/a replication:\n\ \ replSetName: rs-a' /etc/mongod.conf
-pkill mongod
-mongod --config /etc/mongod.conf --fork
 ```
 #### 進入 db2 & db3 貼上 db1 的金鑰
 ```shell
 vi /var/lib/mongodb/mongodb-keyfile
 chmod 600 /var/lib/mongodb/mongodb-keyfile
 chown mongodb.mongodb /var/lib/mongodb/mongodb-keyfile
+```
+#### 三台容器更改 mongod.conf(設定 replSetName & 金鑰)
+```shell
 sed -i '/security:/a security:\n\ \ keyFile: /var/lib/mongodb/mongodb-keyfile' /etc/mongod.conf
 sed -i '/replication:/a replication:\n\ \ replSetName: rs-a' /etc/mongod.conf
 pkill mongod
@@ -113,6 +112,7 @@ use admin
 db.auth("admin", "admintest");
 rs.initiate()
 rs.conf()
+
 rs.add("172.19.0.3:27019")
 rs.add("172.19.0.4:27019")
 cfg = rs.conf()
