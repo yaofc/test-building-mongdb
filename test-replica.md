@@ -47,9 +47,9 @@ docker-compose exec 容器名稱 bash
 ```shell
 apt-get update && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927 && echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.2.list && apt-get update && apt-get install -y mongodb-org
 ```
-### 安裝 vim (docker ubuntu 沒預設編輯器)
+### 安裝 vim openssl (docker ubuntu image 預設沒裝)
 ```shell
-apt-get install -y vim
+apt-get install -y openssl vim
 ```
 ### 設定 mongod.conf (mongod 服務在 port 27019)
 ```shell
@@ -62,7 +62,7 @@ mongod --config /etc/mongod.conf --fork
 ```
 ### 進入mongod 新增user
 ```shell
-mongo -port 27019
+mongo ip:27019
 ```
 ```mongo
 use admin
@@ -106,7 +106,7 @@ mongod --config /etc/mongod.conf --fork
 ```
 #### 進入 db1 mongod 設定 Replica Set
 ```shell
-mongo -port 27019
+mongo 172.19.0.2:27019
 ```
 ```mongodb
 use admin
