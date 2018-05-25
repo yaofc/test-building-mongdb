@@ -110,7 +110,7 @@ mongo -port 27019
 ```
 ```mongodb
 use admin
-db.auth("mpadmin", "mp@23692699");
+db.auth("admin", "admintest");
 rs.initiate()
 rs.conf()
 rs.add("172.19.0.3:27019")
