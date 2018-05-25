@@ -27,11 +27,6 @@ processManagement:
   fork: true
   pidFilePath: /var/run/mongod-cfgserv.pid" >> /etc/mongod-cfgserv.conf
 
-mongod -f /etc/mongod-cfgserv.conf --shutdown
-echo "
-security:
-  keyFile: /var/lib/mongodb/mongodb-keyfile" >> /etc/mongod-cfgserv.conf
-
 mongod -f /etc/mongod-cfgserv.conf
 ```
 ## 三 . 建立 Router
@@ -54,10 +49,6 @@ processManagement:
   fork: true
   pidFilePath: /var/run/mongodb-router.pid" >> /etc/mongod-router.conf
 
-echo "
-security:
-  keyFile: /var/lib/mongodb/mongodb-keyfile" >> /etc/mongod-router.conf
-
 mongos -f /etc/mongod-router.conf
 ```
 #### 進入 db1 mongos 新增 user
@@ -79,7 +70,29 @@ db.createUser( {
     roles: [ { role: "root", db: "admin" } ]
   });
 
-db.auth("admin", "admintest");
+exit
+```
+```shell
+pkill mongos
+mongod -f /etc/mongod-cfgserv.conf --shutdown
+echo "
+security:
+  keyFile: /var/lib/mongodb/mongodb-keyfile" >> /etc/mongod-router.conf
+
+```
+### 三台容器更改 mongod-cfgserv.conf(設定 金鑰)
+```shell
+echo "
+security:
+  keyFile: /var/lib/mongodb/mongodb-keyfile" >> /etc/mongod-cfgserv.conf
+```
+### 進入 db1 mongos 設定 sharding
+```shell
+mongod -f /etc/mongod-cfgserv.conf
+mongos -f /etc/mongod-router.conf
+mongo -u "admin" -p "admintest" --authenticationDatabase "admin"
+```
+```mongodb
 sh.addShard("rs-a/172.19.0.2:27019,172.19.0.3:27019,172.19.0.4:27019")
 exit
 ```
