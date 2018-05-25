@@ -1,0 +1,26 @@
+version: '2'
+services:
+  db1:
+    image: ubuntu:16.04
+    networks:
+      vpcbr:
+        ipv4_address: 172.19.0.2
+    tty: true
+  db2:
+    image: ubuntu:16.04
+    networks:
+      vpcbr:
+        ipv4_address: 172.19.0.3
+    tty: true
+  db3:
+    image: ubuntu:16.04
+    networks:
+      vpcbr:
+        ipv4_address: 172.19.0.4
+    tty: true
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.19.0.0/24
