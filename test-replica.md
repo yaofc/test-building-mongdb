@@ -53,7 +53,7 @@ apt-get install -y openssl vim
 ```
 ### 設定 mongod.conf (mongod 服務在 port 27019)
 ```shell
-sed -i '/bindIp 127.0.0.1/c \ \ bindIp: 0.0.0.0' /etc/mongod.conf
+sed -i '/bindIp: 127.0.0.1/c \ \ bindIp: 0.0.0.0' /etc/mongod.conf
 sed -i '/port: 27017/c \ \ port: 27019' /etc/mongod.conf
 ```
 ### 開啟 mongod 服務
